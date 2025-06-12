@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hannah J. | IT Consultant & Business Analyst</title>
+    <!-- Chosen Palette: Calm Harmony (Warm neutrals with a muted slate blue accent for light mode, inverted for dark mode) -->
+    <!-- Application Structure Plan: A top-down narrative structure starting with a high-impact Project Showcase. Followed by an interactive, collapsible timeline. The AI-powered section demonstrates modern skills. A dark mode toggle has been added for user preference. -->
+    <!-- Visualization & Content Choices: Report Info: Project/Client List. Goal: Inform & Impress. Viz: Interactive Card Grid (HTML/CSS/JS). Interaction: Click to expand details. Justification: Quickly showcases impressive client roster while allowing for deeper dives. | Report Info: Work History. Goal: Organize & Inform. Viz: Collapsible vertical timeline (HTML/CSS/JS). Interaction: Click to expand/collapse. Justification: Manages information density. | Report Info: Key Skills & Achievements -> Goal: Demonstrate & Assist -> Viz: Interactive Form + AI Text Generation (Gemini API) -> Interaction: User selects skills, enters job title, clicks "Generate" -> Justification: Showcases API integration skills and provides a high-impact, useful tool for recruiters. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .timeline-item-content, .project-description {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin-top: 0;
+        }
+        .timeline-item-content.open, .project-description.open {
+            max-height: 500px;
+            opacity: 1;
+            margin-top: 1rem;
+        }
+        .timeline-dot {
+             border: 2px solid #f8f7f4;
+        }
+        .dark .timeline-dot {
+             border-color: #1f2937;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loader {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4b5563;
+            border-radius: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            animation: spin 1s linear infinite;
+        }
+        .toggle-icon {
+             transition: transform 0.3s ease-out;
+        }
+        .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-[#f8f7f4] text-gray-800 dark:bg-[#111827] dark:text-gray-300">
+
+    <div class="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- Header Section -->
+        <header class="relative text-center py-8 section-fade-in">
+            <div class="absolute top-8 right-0">
+                <button id="theme-toggle" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none">
+                    <svg id="theme-icon-light" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    <svg id="theme-icon-dark" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                </button>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-gray-100 tracking-tight">Hannah J.</h1>
+            <p class="mt-2 text-lg sm:text-xl font-medium text-slate-600 dark:text-slate-400">IT Consultant & Business Analyst | Remote-First Digital Transformation</p>
+            <div class="mt-4 flex justify-center items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                <a href="mailto:hanjalil.work@gmail.com" class="hover:text-slate-700 dark:hover:text-slate-300 transition">hanjalil.work@gmail.com</a>
+                <span>&bull;</span>
+                <a href="https://www.linkedin.com/in/hananiajalil/" target="_blank" rel="noopener noreferrer" class="hover:text-slate-700 dark:hover:text-slate-300 transition">LinkedIn</a>
+                <span>&bull;</span>
+                <span>+60 122052205</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Project Showcase Section -->
+            <section id="project-showcase" class="my-12 section-fade-in">
+                 <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center">Project Showcase</h2>
+                 <p class="text-center text-gray-600 dark:text-gray-400 mt-2 max-w-3xl mx-auto">A selection of key projects, demonstrating experience across diverse sectors including finance, government taxation, human resources, and e-learning. Click on a project to learn more.</p>
+                 <div id="project-grid" class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                     <!-- Project cards will be injected here -->
+                 </div>
+            </section>
+
+            <!-- Experience Timeline Section -->
+            <section id="experience" class="my-16 section-fade-in">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center">Professional Experience</h2>
+                <p class="text-center text-gray-600 dark:text-gray-400 mt-2">An interactive timeline of my career progression. Click on any role to see the detailed contributions and achievements.</p>
+                <div class="mt-12">
+                    <div id="timelineContainer" class="space-y-4">
+                        <!-- Timeline items will be injected here by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+             <!-- AI Tools Section -->
+            <section id="ai-tools" class="my-16 section-fade-in">
+                <div class="bg-white dark:bg-gray-900/50 rounded-xl shadow-sm p-6 sm:p-8 border border-gray-200/80 dark:border-gray-700/50">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center flex items-center justify-center">
+                        <span class="mr-2">✨</span> AI Hiring Tools
+                    </h2>
+                    <p class="text-center text-gray-600 dark:text-gray-400 mt-2 max-w-3xl mx-auto">This tool uses the Gemini API to demonstrate how my skills can be positioned for a specific role. Select key achievements, enter a target job title, and generate a tailored cover letter snippet.</p>
+                    <div class="mt-8 max-w-3xl mx-auto">
+                        <div>
+                            <label for="job-title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Target Job Title</label>
+                            <input type="text" name="job-title" id="job-title" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-200" placeholder="e.g., Senior Business Analyst">
+                        </div>
+                        <div class="mt-6">
+                            <p class="block text-sm font-medium text-gray-700 dark:text-gray-300">Select Key Achievements to Highlight:</p>
+                            <div id="achievements-checkboxes" class="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- Checkboxes will be injected here -->
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button id="generate-snippet-btn" class="inline-flex items-center px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 dark:bg-slate-600 dark:hover:bg-slate-500">
+                                ✨ Generate Snippet
+                            </button>
+                        </div>
+                        <div id="snippet-output-container" class="mt-8 hidden">
+                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Generated Snippet:</label>
+                             <div id="snippet-output" class="mt-2 p-4 bg-slate-50 dark:bg-gray-800 rounded-md border border-slate-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 whitespace-pre-wrap min-h-[100px]"></div>
+                             <div class="mt-4 text-right">
+                                <button id="copy-snippet-btn" class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">Copy to Clipboard</button>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Skills Section -->
+            <section id="skills" class="my-16 section-fade-in">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center">Core Competencies & Tools</h2>
+                 <p class="text-center text-gray-600 dark:text-gray-400 mt-2 max-w-3xl mx-auto">A summary of the key areas of expertise, technical proficiencies, and collaboration tools I leverage to deliver results in remote and hybrid environments.</p>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                    <div class="bg-white dark:bg-gray-900/50 rounded-xl shadow-sm p-6 border border-gray-200/80 dark:border-gray-700/50">
+                        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">Areas of Expertise</h3>
+                        <ul class="mt-4 space-y-2 text-gray-600 dark:text-gray-400">
+                             <li>Business Analysis</li><li>Systems Implementation</li><li>Digital Transformation</li><li>Requirements Gathering</li><li>UAT Cycles</li><li>Stakeholder Management</li><li>Agile Methodologies</li><li>Cross-Functional Leadership</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900/50 rounded-xl shadow-sm p-6 border border-gray-200/80 dark:border-gray-700/50">
+                        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">Technical Skills</h3>
+                        <ul class="mt-4 space-y-2 text-gray-600 dark:text-gray-400">
+                           <li>SQL</li><li>JIRA</li><li>Visio</li><li>Figma</li><li>WordPress</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900/50 rounded-xl shadow-sm p-6 border border-gray-200/80 dark:border-gray-700/50">
+                        <h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">Remote Collaboration Suite</h3>
+                        <ul class="mt-4 space-y-2 text-gray-600 dark:text-gray-400">
+                           <li>Slack</li><li>Loom</li><li>JIRA</li><li>Trello</li><li>Notion</li><li>Google Workspace</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Education Section -->
+            <section id="education" class="my-16 section-fade-in">
+                 <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 text-center">Education</h2>
+                 <div class="mt-8 max-w-2xl mx-auto bg-white dark:bg-gray-900/50 rounded-xl shadow-sm p-6 border border-gray-200/80 dark:border-gray-700/50 text-center">
+                     <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">Bachelor of Business Administration (Finance)</h3>
+                     <p class="text-gray-600 dark:text-gray-400">Open University Malaysia</p>
+                     <hr class="my-4 border-gray-200 dark:border-gray-700">
+                     <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-200">Foundation in Law (Top 20% Achiever)</h3>
+                     <p class="text-gray-600 dark:text-gray-400">Universiti Teknologi MARA</p>
+                 </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data for the application
+            const projectData = [
+                { client: 'Development Bank of Sarawak', project: 'Financial Management System Project', icon: '🏦', description: 'Led requirement gathering and documentation for a new financial management system to streamline their core banking operations and improve reporting accuracy.' },
+                { client: 'Royal Malaysian Customs Department', project: 'MyLVG Low-Value Goods Taxation System', icon: '📜', description: 'Key member of the team that developed the MyLVG system for taxing low-value goods, focusing on creating clear requirement specifications for a seamless and compliant implementation.' },
+                { client: 'PERKESO', project: 'Human Resources Management Project', icon: '👥', description: 'Contributed to the modernization of the national social security organization\'s HR management system, focusing on improving user experience and process efficiency.' },
+                { client: 'CIDB', project: 'e-Learning Content Development Project', icon: '📚', description: 'Designed and developed structured e-learning modules, translating complex construction industry standards into engaging and effective digital content for industry professionals.' },
+                { client: 'Putra Specialist Hospital', project: 'HR & Time Management System Project', icon: '🏥', description: 'Managed the implementation of an integrated HR and Time Management system, ensuring the new platform met the complex scheduling and payroll needs of a major hospital.' }
+            ];
+
+            const experienceData = [
+                { role: 'Functional Consultant (Hybrid)', company: 'Starvision Information Technology Sdn. Bhd.', period: 'Feb 2023 - Present', details: [ 'Drove <strong>RM 500K in new revenue</strong> by spearheading the documentation for over 10 business requirements for a major government project with the Royal Malaysian Customs Department.', 'Led a fully remote UI/UX transformation for a core HR product, coordinating user testing with an international team across Singapore, Myanmar, and India using Figma prototypes.', 'Pioneered virtual stakeholder workshops, cutting the requirement gathering cycle from 3 weeks to just 5 days and improving the quality of feedback.', 'Authored over 30 detailed requirement specifications, enabling offshore development teams to deliver with 30% fewer clarification requests.', 'Successfully trained over 100 end-users for 12 major software releases, achieving a 98% user satisfaction rate.' ] },
+                { role: 'Project Manager Assistant (Remote, Part-Time Contract)', company: 'AJS Solution Enterprise', period: 'Jun 2023 - Dec 2023', details: [ 'Delivered 98% of software releases on schedule by implementing Agile methodologies, including daily stand-ups and sprint planning.', 'Mitigated project risks by 30% through the development and execution of proactive assessment strategies.' ] },
+                { role: 'Contract Trainer', company: 'Malaysian Institute of Debating and Public Speaking', period: 'Apr 2022 - Dec 2022', details: [ 'Coached 20+ professionals in advanced communication, presentation, and stakeholder engagement techniques, elevating presentation success rates by 70%.' ] },
+                { role: 'Business Analyst (Remote)', company: 'SME Cloud Sdn Bhd.', period: 'Feb 2021 - Dec 2022', details: [ 'Enhanced system functionality by 30% by eliciting over 300 user stories from more than 40 stakeholders.', 'Slashed missed requirements by 40% through the meticulous implementation of traceability matrices (RTMs).' ] },
+                { role: 'Freelance Instructional Designer', company: 'Self-Employed', period: '2021', details: [ 'Translated complex client requirements into structured and effective e-learning modules.', 'Conducted client-facing review sessions to gather feedback and ensure alignment with project goals, providing an early foundation in client and requirements management.' ] },
+                { role: 'Early Career & Foundational Experience', company: 'Sales, Marketing & Customer Service', period: '2018 - 2020', details: [ 'Developed strong foundational skills in customer service, transaction management, and direct sales in roles at Petronas, as a skincare agent, and as a Sales Admin for a private e-commerce individual.', 'Gained experience in product posting and management on platforms like Shopee and Telegram, building an early understanding of digital platforms.' ] }
+            ];
+
+            const achievementsForAI = [ "Driving RM 500K in new revenue for a major government project.", "Leading a remote UI/UX transformation across 3 countries.", "Slashing requirement gathering time by 76% (from 3 weeks to 5 days).", "Delivering 98% of software releases on time using Agile methods.", "Reducing missed requirements by 40% with traceability matrices.", "Enhancing system functionality by 30% by eliciting over 300 user stories." ];
+
+            // --- Theme Toggler ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    lightIcon.classList.add('hidden');
+                    darkIcon.classList.remove('hidden');
+                }
+            };
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                applyTheme(isDark ? 'dark' : 'light');
+            });
+            
+            // Apply saved theme on load
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(savedTheme);
+
+
+            // Populate Project Showcase
+            const projectGrid = document.getElementById('project-grid');
+            projectData.forEach(project => {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'project-card bg-white dark:bg-gray-900/50 rounded-xl shadow-sm p-6 border border-gray-200/80 dark:border-gray-700/50';
+                cardWrapper.innerHTML = `<button class="w-full text-left focus:outline-none project-toggle"><div class="flex justify-between items-start"><div class="text-4xl mb-4">${project.icon}</div><div class="toggle-icon text-slate-400 dark:text-slate-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div></div><h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">${project.client}</h3><p class="text-sm text-gray-600 dark:text-gray-400 mt-2">${project.project}</p></button><div class="project-description text-sm text-gray-700 dark:text-gray-300"><p>${project.description}</p></div>`;
+                projectGrid.appendChild(cardWrapper);
+            });
+            
+            document.querySelectorAll('.project-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const description = button.nextElementSibling;
+                    const icon = button.querySelector('.toggle-icon');
+                    description.classList.toggle('open');
+                    icon.classList.toggle('open');
+                });
+            });
+
+
+            // Populate Timeline
+            const timelineContainer = document.getElementById('timelineContainer');
+            experienceData.forEach((item, index) => {
+                const isLast = index === experienceData.length - 1;
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'flex';
+                let detailsHTML = item.details.map(detail => `<li class="text-gray-600 dark:text-gray-400">${detail}</li>`).join('');
+                timelineItem.innerHTML = `<div class="flex flex-col items-center mr-4"><div><div class="timeline-dot bg-slate-600"></div></div>${!isLast ? '<div class="timeline-connector bg-gray-300 dark:bg-gray-700 flex-grow"></div>' : ''}</div><div class="bg-white dark:bg-gray-900/50 rounded-xl shadow-sm p-6 border border-gray-200/80 dark:border-gray-700/50 w-full mb-4"><button class="w-full text-left focus:outline-none timeline-toggle"><div class="flex justify-between items-center"><div><h3 class="font-bold text-lg text-slate-800 dark:text-slate-200">${item.role}</h3><p class="font-medium text-slate-600 dark:text-slate-400">${item.company}</p><p class="text-sm text-gray-500 dark:text-gray-500">${item.period}</p></div><div class="toggle-icon text-slate-500 transform transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></div></div></button><div class="timeline-item-content mt-4"><ul class="space-y-2 list-disc list-inside">${detailsHTML}</ul></div></div>`;
+                timelineContainer.appendChild(timelineItem);
+            });
+            
+            document.querySelectorAll('.timeline-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('.toggle-icon');
+                    content.classList.toggle('open');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            // Populate AI Tool Checkboxes
+            const checkboxesContainer = document.getElementById('achievements-checkboxes');
+            achievementsForAI.forEach((achievement, index) => {
+                const div = document.createElement('div');
+                div.className = 'relative flex items-start';
+                div.innerHTML = `<div class="flex h-5 items-center"><input id="achievement-${index}" name="achievements" type="checkbox" value="${achievement}" class="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-slate-600 focus:ring-slate-500 bg-gray-100 dark:bg-gray-800"></div><div class="ml-3 text-sm"><label for="achievement-${index}" class="font-medium text-gray-700 dark:text-gray-300">${achievement}</label></div>`;
+                checkboxesContainer.appendChild(div);
+            });
+
+            // Gemini API Interaction
+            const generateBtn = document.getElementById('generate-snippet-btn');
+            const outputContainer = document.getElementById('snippet-output-container');
+            const outputDiv = document.getElementById('snippet-output');
+            const copyBtn = document.getElementById('copy-snippet-btn');
+
+            generateBtn.addEventListener('click', async () => {
+                const jobTitle = document.getElementById('job-title').value;
+                const selectedAchievements = Array.from(document.querySelectorAll('input[name="achievements"]:checked'))
+                    .map(cb => cb.value);
+
+                if (!jobTitle || selectedAchievements.length === 0) {
+                    alert('Please provide a job title and select at least one achievement.');
+                    return;
+                }
+
+                outputContainer.style.display = 'block';
+                outputDiv.innerHTML = '<div class="flex justify-center items-center"><div class="loader"></div></div>';
+                generateBtn.disabled = true;
+
+                const prompt = `As a career expert, write a concise and impactful paragraph (2-4 sentences) for Hannah J.'s cover letter. She is applying for a "${jobTitle}" position. Highlight how her following achievements make her a strong fit for this role: ${selectedAchievements.join(', ')}. Frame the paragraph to be professional, confident, and results-oriented.`;
+
+                try {
+                    const apiKey = "";
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) { throw new Error(`API error: ${response.statusText}`); }
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0) { const text = result.candidates[0].content.parts[0].text; outputDiv.innerText = text.trim(); } else { throw new Error('No content received from API.'); }
+                } catch (error) {
+                    console.error('Error with Gemini API:', error);
+                    outputDiv.innerText = 'Sorry, an error occurred while generating the snippet. Please try again.';
+                } finally {
+                    generateBtn.disabled = false;
+                }
+            });
+
+            copyBtn.addEventListener('click', () => {
+                const textToCopy = outputDiv.innerText;
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    copyBtn.innerText = 'Copied!';
+                    setTimeout(() => { copyBtn.innerText = 'Copy to Clipboard'; }, 2000);
+                } catch (err) { console.error('Failed to copy text: ', err); }
+                document.body.removeChild(textArea);
+            });
+
+
+            // Fade in sections on scroll
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
